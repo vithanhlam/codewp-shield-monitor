@@ -1,0 +1,11 @@
+/.distignore
+/.git
+/.github
+/.agents
+/.codex
+/node_modules
+/docs
+/README.MD
+/WORDPRESS.MD
+/wordpress-org-assets
+/release

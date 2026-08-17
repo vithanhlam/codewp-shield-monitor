@@ -1,0 +1,40 @@
+.shield-monitor-login-extra {
+	background: #fff7ed;
+	border: 1px solid #fed7aa;
+	border-radius: 8px;
+	margin: 16px 0;
+	padding: 12px;
+}
+
+.shield-monitor-login-extra label {
+	color: #1d2327;
+	display: block;
+	font-weight: 700;
+	margin-bottom: 7px;
+}
+
+.shield-monitor-pin {
+	display: flex;
+	gap: 6px;
+}
+
+.shield-monitor-pin input {
+	border: 1px solid #d0d7de;
+	border-radius: 7px;
+	font-size: 22px;
+	font-weight: 800;
+	height: 42px;
+	text-align: center;
+	width: 38px;
+}
+
+.shield-monitor-pin input:focus {
+	border-color: #e57722;
+	box-shadow: 0 0 0 2px #e5772233;
+	outline: 0;
+}
+
+.shield-monitor-captcha {
+	margin-top: 12px;
+	min-height: 65px;
+}

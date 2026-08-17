@@ -1,0 +1,15 @@
+{
+  "name": "codewp-shield-monitor",
+  "version": "1.4.3",
+  "private": true,
+  "license": "GPL-2.0-or-later",
+  "scripts": {
+    "build": "esbuild assets/src/admin.js --bundle --minify --outfile=assets/js/admin.js"
+  },
+  "dependencies": {
+    "qrcode-generator": "^2.0.4"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}

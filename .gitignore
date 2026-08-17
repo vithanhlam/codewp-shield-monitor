@@ -1,0 +1,24 @@
+# Dependencies / build
+/node_modules/
+/package-lock.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Local SVN metadata & nested duplicate checkout
+release/wordpress-org-svn/.svn/
+release/wordpress-org-svn/**/.svn/
+release/wordpress-org-svn/codewp-shield-monitor/
+
+# Premium / local packaging (not part of free WordPress.org release)
+addons/media-pro/
+addons/media-pro.zip
+*.zip
+
+# Agent / tooling
+.agents/
+.codex/
