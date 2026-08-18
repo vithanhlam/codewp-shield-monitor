@@ -14,7 +14,7 @@ Privacy-first WordPress security hardening, login protection, and local audit lo
 
 CodeWP Shield Monitor (ShieldPress) adds a careful baseline of WordPress security controls without sending site data to third parties by default.
 
-Monitor your website health anywhere — visit [shieldpress.net](https://shieldpress.net) or download the ShieldPress app on [iOS](https://apps.apple.com/app/shieldpress) and [Android](https://play.google.com/store/apps/details?id=com.shieldpress.app) to keep track of your site's security status, receive real-time alerts, and manage protection settings on the go.
+Monitor your website health anywhere — visit [shieldpress.net](https://shieldpress.net) or download the ShieldPress app on [iOS](https://apps.apple.com/us/app/shieldpress/id6790792856) and [Android](https://play.google.com/store/apps/details?id=com.shieldpress.app) to keep track of your site's security status, receive real-time alerts, and manage protection settings on the go.
 
 **Security & Hardening**
 
