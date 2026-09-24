@@ -4,7 +4,7 @@ Tags: security, login, hardening, audit-log, privacy
 Requires at least: 6.4
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.4.3
+Stable tag: 1.4.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,7 +32,7 @@ Monitor your website health anywhere — visit [shieldpress.net](https://shieldp
 **Monitoring & Scanning**
 
 * Records a local security audit log with configurable retention (30 days default).
-* Monitors important WordPress files every five minutes using SHA-256 hashes.
+* Monitors important WordPress files once daily during off-peak hours using SHA-256 hashes.
 * Runs lightweight suspicious-code and database scans with severity-based findings.
 * Adds threat intelligence checks for admin anomalies, executable uploads, suspicious options, cron hooks, MU plugins, fake CAPTCHA content, external scripts, cloaking signals, and hardening gaps.
 * Ships 38 built-in threat detection patterns covering web shells, backdoors, obfuscation techniques, credit card skimmers, SEO spam, PHP object injection, SQL injection, SSRF, and more — based on real-world CVEs and active malware campaigns (Balada Injector, Sign1, SocGholish, mu-plugins backdoors).
@@ -113,6 +113,12 @@ Yes. XML-RPC blocking is disabled by default because Jetpack and remote publishi
 1. CodeWP Shield Monitor security dashboard with protection score, file integrity, malware scan, and audit log panels.
 
 == Changelog ==
+
+= 1.4.4 =
+* Expanded integrity monitoring to parent/child themes, active/inactive plugins, MU-plugins, drop-ins, uploads and configuration/verification files, with coverage and skipped-file reporting.
+* Added mobile/touch conditional redirect and meta refresh indicators with a trusted external domain filter.
+* Scheduled heuristic scans now identify their file/database limits and partial coverage in reports.
+* Moved file integrity scans to 04:15 in the WordPress site timezone; runs requested outside the 01:00–05:59 window are deferred. Malware scans triggered after administrator login are deferred to the configured scan time.
 
 = 1.4.3 =
 * Fixed fatal error on plugin uninstall when dependent classes were not loaded by uninstall.php.

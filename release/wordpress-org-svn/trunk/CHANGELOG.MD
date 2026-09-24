@@ -4,6 +4,15 @@ All notable changes to CodeWP Shield Monitor (ShieldPress) are documented in thi
 
 ---
 
+## 1.4.4 — 2026-09-24
+
+### Security Monitoring
+
+- Expanded integrity coverage to parent/child themes, active/inactive plugins, MU-plugins, drop-ins, uploads, HTML verification files, and configuration files.
+- Added explicit coverage and skipped-file reason reporting; scheduled heuristic scan reports now disclose their bounded partial coverage.
+- Added conditional mobile/touch redirect and meta refresh indicators, and a filterable trusted external domain list.
+- Moved automatic integrity checks to a daily 04:15 site-local schedule, deferred runs outside 01:00–05:59, and moved login-triggered malware scans to the configured scan time.
+
 ## 1.4.3 — 2026-08-17
 
 ### Bug Fixes

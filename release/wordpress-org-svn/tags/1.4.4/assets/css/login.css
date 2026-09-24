@@ -1,0 +1,107 @@
+.shield-monitor-login-extra {
+	background: linear-gradient(135deg, #fff9f2, #fff4e8);
+	border: 1px solid #f5c88a;
+	border-radius: 10px;
+	margin: 18px 0;
+	padding: 16px 18px;
+	box-shadow: 0 2px 8px #e577220a;
+}
+
+.shield-monitor-login-extra label {
+	color: #1d2327;
+	display: block;
+	font-size: 13px;
+	font-weight: 700;
+	letter-spacing: .3px;
+	margin-bottom: 10px;
+}
+
+.shield-monitor-pin {
+	display: flex;
+	gap: 8px;
+	justify-content: center;
+}
+
+.shield-monitor-pin input {
+	background: #fff;
+	border: 2px solid #e2dcd5;
+	border-radius: 10px;
+	font-family: 'SF Mono', 'Consolas', 'Monaco', monospace;
+	font-size: 22px;
+	font-weight: 800;
+	height: 48px;
+	padding: 0 !important;
+	text-align: center;
+	transition: border-color .2s, box-shadow .2s, transform .15s;
+	width: 44px;
+}
+
+.shield-monitor-pin input:focus {
+	border-color: #e57722;
+	box-shadow: 0 0 0 3px #e577221a, 0 4px 12px #e577220f;
+	outline: 0;
+	transform: translateY(-1px);
+}
+
+.shield-monitor-pin input:not(:placeholder-shown) {
+	border-color: #e57722;
+	background: #fffaf5;
+}
+
+.shield-monitor-captcha {
+	margin-top: 14px;
+	min-height: 65px;
+}
+
+.shield-monitor-math-captcha {
+	align-items: center;
+	background: linear-gradient(135deg, #fefce8, #fef9c3);
+	border: 1px solid #fbbf24;
+	border-radius: 10px;
+	display: flex;
+	gap: 16px;
+	margin: 18px 0;
+	padding: 16px 18px;
+	box-shadow: 0 2px 8px #f59e0b0a;
+}
+
+.shield-monitor-math-captcha label {
+	color: #1d2327;
+	flex: 1;
+	font-size: 14px;
+	font-weight: 700;
+	margin: 0;
+	white-space: nowrap;
+}
+
+.shield-monitor-math-captcha input[type="number"] {
+	background: #fff;
+	border: 2px solid #e2dcd5;
+	border-radius: 8px;
+	flex: 0 0 120px;
+	font-size: 18px;
+	font-weight: 700;
+	height: 44px;
+	padding: 4px 12px;
+	text-align: center;
+	transition: border-color .2s, box-shadow .2s;
+	width: 120px;
+}
+
+.shield-monitor-math-captcha input[type="number"]:focus {
+	border-color: #f59e0b;
+	box-shadow: 0 0 0 3px #f59e0b1a;
+	outline: 0;
+}
+
+@media (max-width: 480px) {
+	.shield-monitor-math-captcha {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 10px;
+	}
+	.shield-monitor-math-captcha input[type="number"] {
+		flex: none;
+		width: 100%;
+	}
+}

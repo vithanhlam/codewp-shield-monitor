@@ -3,7 +3,7 @@
  * Plugin Name:       CodeWP Shield Monitor
  * Plugin URI:        https://shieldpress.net
  * Description:       Lightweight, privacy-first security hardening and login protection for WordPress.
- * Version:           1.4.3
+ * Version:           1.4.4
  * Requires at least: 6.4
  * Requires PHP:      7.4
  * Author:            vithanhlam
@@ -15,7 +15,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'SHIELD_MONITOR_VERSION', '1.4.3' );
+define( 'SHIELD_MONITOR_VERSION', '1.4.4' );
 define( 'CODEWP_SHIELD_MONITOR_NAME', 'Shield Monitor' );
 define( 'CODEWP_SHIELD_MONITOR_SLUG', 'codewp-shield-monitor' );
 define( 'CODEWP_SHIELD_MONITOR_API_NAMESPACE', 'codewp-shield-monitor/v1' );

@@ -1,0 +1,75 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: CodeWP Shield Monitor 1.3.3\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Domain: shield_monitor\n"
+
+msgid "CodeWP Shield Monitor"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Monitor. Protect. Alert."
+msgstr ""
+
+msgid "Security settings"
+msgstr ""
+
+msgid "Login protection"
+msgstr ""
+
+msgid "Temporarily locks an IP after repeated failed logins."
+msgstr ""
+
+msgid "Maximum attempts"
+msgstr ""
+
+msgid "Lockout (minutes)"
+msgstr ""
+
+msgid "Block user enumeration"
+msgstr ""
+
+msgid "Security headers"
+msgstr ""
+
+msgid "Hide WordPress version"
+msgstr ""
+
+msgid "Disable file editor"
+msgstr ""
+
+msgid "Disable XML-RPC"
+msgstr ""
+
+msgid "Local audit log"
+msgstr ""
+
+msgid "Keep events (days)"
+msgstr ""
+
+msgid "Save settings"
+msgstr ""
+
+msgid "Recent security events"
+msgstr ""
+
+msgid "No security events recorded yet."
+msgstr ""
+
+msgid "Event"
+msgstr ""
+
+msgid "User"
+msgstr ""
+
+msgid "Time (UTC)"
+msgstr ""
+
+msgid "CodeWP Shield Monitor security events"
+msgstr ""
+
+msgid "CodeWP Shield Monitor stores login and file-change event types, timestamps, WordPress user IDs, relative file paths, cryptographic file hashes, and one-way hashed IP addresses on this website for 30 days. File contents are never stored. If email alerts are enabled, login IP and browser information is emailed to the site administrator but not stored in the event log. When core checksum verification is enabled, the installed WordPress version, locale, and CodeWP Shield Monitor version user-agent are sent to the official WordPress.org checksum API at most once every 12 hours. No site content, users, stored IP fields, or credentials are included; WordPress.org can observe the network request source IP. A paired CodeWP Shield Monitor App or Web client can request security data through a scoped, expiring, revocable token-protected endpoint hosted on this website."
+msgstr ""
