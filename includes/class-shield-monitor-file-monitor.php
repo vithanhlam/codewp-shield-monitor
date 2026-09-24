@@ -6,7 +6,7 @@ class Shield_Monitor_File_Monitor {
 	const CRON_HOOK     = 'shield_monitor_file_integrity_scan';
 	const CORE_OPTION   = 'shield_monitor_core_checksum_status';
 	const SCOPE_OPTION  = 'shield_monitor_file_scope_version';
-	const SCOPE_VERSION = '2';
+	const SCOPE_VERSION = '3';
 	const DB_VERSION    = '1.0';
 
 	private $settings;
@@ -26,9 +26,9 @@ class Shield_Monitor_File_Monitor {
 	}
 
 	public function cron_schedule( $schedules ) {
-		$schedules['shield_monitor_five_minutes'] = array(
-			'interval' => 5 * MINUTE_IN_SECONDS,
-			'display'  => __( 'Every five minutes', 'codewp-shield-monitor' ),
+		$schedules['shield_monitor_offpeak_daily'] = array(
+			'interval' => DAY_IN_SECONDS,
+			'display'  => __( 'Once daily (off-peak)', 'codewp-shield-monitor' ),
 		);
 		return $schedules;
 	}
@@ -74,8 +74,9 @@ class Shield_Monitor_File_Monitor {
 			$this->maybe_create_baseline_table();
 		}
 		$enabled = $this->settings->get( 'file_monitoring' ) || $this->settings->get( 'core_checksum_verification' );
-		if ( $enabled && ! wp_next_scheduled( self::CRON_HOOK ) ) {
-			wp_schedule_event( time() + MINUTE_IN_SECONDS, 'shield_monitor_five_minutes', self::CRON_HOOK );
+		if ( $enabled && ( ! wp_next_scheduled( self::CRON_HOOK ) || 'shield_monitor_offpeak_daily' !== wp_get_schedule( self::CRON_HOOK ) ) ) {
+			wp_clear_scheduled_hook( self::CRON_HOOK );
+			wp_schedule_event( $this->next_offpeak_scan(), 'shield_monitor_offpeak_daily', self::CRON_HOOK );
 		}
 		if ( ! $enabled ) {
 			wp_clear_scheduled_hook( self::CRON_HOOK );
@@ -124,6 +125,13 @@ class Shield_Monitor_File_Monitor {
 	 * Cron-safe wrapper: catch fatal errors so they never break page loads.
 	 */
 	public function safe_scan() {
+		$hour = (int) current_datetime()->format( 'G' );
+		if ( $hour < 1 || $hour >= 6 ) {
+			if ( ! wp_next_scheduled( self::CRON_HOOK, array( 'deferred' ) ) ) {
+				wp_schedule_single_event( $this->next_offpeak_scan(), self::CRON_HOOK, array( 'deferred' ) );
+			}
+			return;
+		}
 		try {
 			$this->scan();
 		} catch ( \Throwable $e ) {
@@ -201,7 +209,7 @@ class Shield_Monitor_File_Monitor {
 			'baseline_storage' => 'database',
 			'hash_algorithms'  => array( 'md5', 'sha256' ),
 			'baseline_summary' => $db_summary,
-			'coverage'         => 'critical_and_entry_files',
+			'coverage'         => get_option( 'shield_monitor_file_scope_report', array( 'status' => 'not_scanned' ) ),
 			'next_scan_at'     => $this->next_scan_at(),
 			'cron_overdue'     => $this->cron_overdue(),
 			'core_checksum'    => $core_status,
@@ -216,12 +224,21 @@ class Shield_Monitor_File_Monitor {
 	private function cron_overdue() {
 		$last = get_option( 'shield_monitor_file_last_scan', '' );
 		if ( $last ) {
-			return time() - strtotime( $last ) > 30 * MINUTE_IN_SECONDS;
+			return time() - strtotime( $last ) > 26 * HOUR_IN_SECONDS;
 		}
 		if ( get_option( 'shield_monitor_file_baseline_created', '' ) ) {
 			return true;
 		}
 		return defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON;
+	}
+
+	private function next_offpeak_scan() {
+		$timezone = wp_timezone();
+		$next = new DateTimeImmutable( 'today 04:15', $timezone );
+		if ( $next->getTimestamp() <= time() + MINUTE_IN_SECONDS ) {
+			$next = $next->modify( '+1 day' );
+		}
+		return $next->getTimestamp();
 	}
 
 	private function baseline_summary() {
@@ -392,7 +409,7 @@ class Shield_Monitor_File_Monitor {
 		if ( 0 === strpos( $path, 'wp-' ) || in_array( $path, array( '.htaccess', 'index.php', '../wp-config.php', 'wp-config.php' ), true ) ) {
 			return 'critical';
 		}
-		if ( 'modified' === $change && ( 0 === strpos( $path, 'active-plugin/' ) || 0 === strpos( $path, 'active-theme/' ) ) ) {
+		if ( 'modified' === $change && ( 0 === strpos( $path, 'plugin/' ) || 0 === strpos( $path, 'active-plugin/' ) || 0 === strpos( $path, 'active-theme/' ) || 0 === strpos( $path, 'parent-theme/' ) || 0 === strpos( $path, 'mu-plugin/' ) ) ) {
 			return 'high';
 		}
 		return 'deleted' === $change ? 'medium' : 'low';
@@ -404,10 +421,10 @@ class Shield_Monitor_File_Monitor {
 	}
 
 	private function file_group( $path ) {
-		if ( 0 === strpos( $path, 'active-plugin/' ) ) {
+		if ( 0 === strpos( $path, 'plugin/' ) || 0 === strpos( $path, 'active-plugin/' ) || 0 === strpos( $path, 'mu-plugin/' ) ) {
 			return 'plugin';
 		}
-		if ( 0 === strpos( $path, 'active-theme/' ) ) {
+		if ( 0 === strpos( $path, 'active-theme/' ) || 0 === strpos( $path, 'parent-theme/' ) ) {
 			return 'theme';
 		}
 		if ( false !== strpos( $path, 'uploads/' ) ) {
@@ -479,6 +496,11 @@ class Shield_Monitor_File_Monitor {
 			);
 		}
 		if ( $record_scan ) {
+			$report = get_option( 'shield_monitor_file_scope_report', array() );
+			$report['files_hashed'] = count( $snapshot );
+			$report['status'] = ! empty( $report['truncated'] ) ? 'partial' : 'complete';
+			$report['scanned_at'] = gmdate( 'c' );
+			update_option( 'shield_monitor_file_scope_report', $report, false );
 			update_option( 'shield_monitor_file_last_scan', gmdate( 'c' ), false );
 		}
 		return $snapshot;
@@ -486,8 +508,10 @@ class Shield_Monitor_File_Monitor {
 
 	private function critical_files() {
 		$files = array();
+		$skipped = array();
+		$limits = array();
 		$root  = $this->wordpress_root_path();
-		foreach ( array( '.htaccess', 'index.php', 'wp-config.php', 'wp-load.php', 'wp-settings.php', 'wp-login.php', 'wp-cron.php', 'wp-blog-header.php', 'xmlrpc.php', 'wp-admin/index.php', 'wp-includes/version.php' ) as $relative ) {
+		foreach ( array( '.htaccess', '.user.ini', 'index.php', 'wp-config.php', 'wp-load.php', 'wp-settings.php', 'wp-login.php', 'wp-cron.php', 'wp-blog-header.php', 'xmlrpc.php', 'wp-admin/index.php', 'wp-includes/version.php' ) as $relative ) {
 			$files[ $relative ] = $root . $relative;
 		}
 		$parent_config = dirname( untrailingslashit( $root ) ) . '/wp-config.php';
@@ -496,25 +520,39 @@ class Shield_Monitor_File_Monitor {
 			unset( $files['wp-config.php'] );
 		}
 		$stylesheet = get_stylesheet_directory();
-		foreach ( array( 'functions.php', 'style.css' ) as $name ) {
-			$files[ 'active-theme/' . $name ] = trailingslashit( $stylesheet ) . $name;
+		$themes = array_unique( array_filter( array( get_template_directory(), $stylesheet ) ) );
+		foreach ( $themes as $theme_dir ) {
+			$theme_label = $theme_dir === $stylesheet ? 'active-theme/' : 'parent-theme/';
+			foreach ( array( 'functions.php', 'style.css' ) as $name ) {
+				$files[ $theme_label . $name ] = trailingslashit( $theme_dir ) . $name;
+			}
+			$theme_files = $this->directory_files( $theme_dir, $theme_label . basename( $theme_dir ), 1500, $skipped );
+			$files = array_merge( $files, $theme_files );
 		}
-		$files = array_merge( $files, $this->directory_files( $stylesheet, 'active-theme/' . basename( $stylesheet ), 300 ) );
-		$active_plugins = array_merge( (array) get_option( 'active_plugins', array() ), array_keys( (array) get_site_option( 'active_sitewide_plugins', array() ) ) );
-		$plugin_file_budget = 1200;
+		$plugins = array();
+		$plugin_file_budget = 6000;
 		$plugins_dir        = $this->plugins_directory_path();
-		foreach ( array_unique( $active_plugins ) as $plugin ) {
-			$safe = sanitize_text_field( $plugin );
-			if ( $safe ) {
-				$files[ 'active-plugin/' . $safe ] = $plugins_dir . $safe;
-				$plugin_dir = $plugins_dir . dirname( $safe );
-				if ( $plugin_file_budget > 0 && '.' !== dirname( $safe ) && is_dir( $plugin_dir ) ) {
-					$plugin_files       = $this->directory_files( $plugin_dir, 'active-plugin/' . dirname( $safe ), min( 250, $plugin_file_budget ) );
-					$plugin_file_budget = max( 0, $plugin_file_budget - count( $plugin_files ) );
-					$files              = array_merge( $files, $plugin_files );
-				}
+		foreach ( glob( trailingslashit( $plugins_dir ) . '*.php' ) ?: array() as $plugin_file ) { $plugins[] = basename( $plugin_file ); }
+		foreach ( glob( trailingslashit( $plugins_dir ) . '*', GLOB_ONLYDIR ) ?: array() as $plugin_dir ) {
+			foreach ( glob( trailingslashit( $plugin_dir ) . '*.php' ) ?: array() as $plugin_file ) { $plugins[] = basename( $plugin_dir ) . '/' . basename( $plugin_file ); }
+		}
+		foreach ( array_unique( $plugins ) as $plugin ) {
+			$files[ 'plugin/' . $plugin ] = $plugins_dir . $plugin;
+			$plugin_dir = $plugins_dir . dirname( $plugin );
+			if ( $plugin_file_budget > 0 && '.' !== dirname( $plugin ) && is_dir( $plugin_dir ) ) {
+				$plugin_files = $this->directory_files( $plugin_dir, 'plugin/' . dirname( $plugin ), min( 500, $plugin_file_budget ), $skipped );
+				$plugin_file_budget = max( 0, $plugin_file_budget - count( $plugin_files ) );
+				$files = array_merge( $files, $plugin_files );
 			}
 		}
+		$mu_dir = trailingslashit( WP_CONTENT_DIR ) . 'mu-plugins';
+		$files = array_merge( $files, $this->directory_files( $mu_dir, 'mu-plugin', 1000, $skipped ) );
+		$dropins = array( 'advanced-cache.php', 'db.php', 'object-cache.php', 'sunrise.php', 'maintenance.php' );
+		foreach ( $dropins as $dropin ) { $path = trailingslashit( WP_CONTENT_DIR ) . $dropin; if ( is_file( $path ) ) { $files[ 'drop-in/' . $dropin ] = $path; } }
+		$upload_dir = wp_upload_dir();
+		$files = array_merge( $files, $this->directory_files( $upload_dir['basedir'] ?? '', 'uploads', 2500, $skipped ) );
+		$report = array( 'status' => $skipped ? 'partial' : 'complete', 'scope' => array( 'core_config', 'active_and_inactive_plugins', 'active_and_parent_themes', 'mu_plugins', 'drop_ins', 'uploads', 'html_verification_files' ), 'files_discovered' => count( $files ), 'files_hashed' => 0, 'skipped_by_reason' => $skipped, 'limits' => $limits, 'truncated' => ! empty( $skipped['file_limit'] ), 'scanned_at' => null );
+		update_option( 'shield_monitor_file_scope_report', $report, false );
 		return $files;
 	}
 
@@ -530,23 +568,26 @@ class Shield_Monitor_File_Monitor {
 		return trailingslashit( wp_normalize_path( dirname( plugin_dir_path( SHIELD_MONITOR_FILE ) ) ) );
 	}
 
-	private function directory_files( $root, $prefix, $limit ) {
+	private function directory_files( $root, $prefix, $limit, &$skipped = null ) {
 		$files = array();
-		if ( ! is_dir( $root ) || ! is_readable( $root ) ) {
+		if ( ! $root || ! is_dir( $root ) || ! is_readable( $root ) ) {
+			if ( is_array( $skipped ) ) { $skipped['unavailable_directory'] = ( $skipped['unavailable_directory'] ?? 0 ) + 1; }
 			return $files;
 		}
 
-		$allowed_extensions = array( 'php', 'js', 'css', 'json' );
-		$blocked_dirs       = array( 'node_modules', 'vendor', '.git', 'cache', 'uploads', 'dist', 'build' );
+		$allowed_extensions = array( 'php', 'js', 'css', 'json', 'html', 'htm', 'ini', 'conf', 'txt', 'xml' );
+		$blocked_dirs       = array( 'node_modules', '.git' );
 		$root               = untrailingslashit( wp_normalize_path( $root ) );
 
 		try {
 			$iterator = new RecursiveIteratorIterator(
 				new RecursiveCallbackFilterIterator(
 					new RecursiveDirectoryIterator( $root, FilesystemIterator::SKIP_DOTS ),
-					function ( $current ) use ( $blocked_dirs ) {
+					function ( $current ) use ( $blocked_dirs, &$skipped ) {
 						if ( $current->isDir() ) {
-							return ! in_array( strtolower( $current->getFilename() ), $blocked_dirs, true );
+							$allowed = ! in_array( strtolower( $current->getFilename() ), $blocked_dirs, true );
+							if ( ! $allowed && is_array( $skipped ) ) { $skipped['excluded_directory'] = ( $skipped['excluded_directory'] ?? 0 ) + 1; }
+							return $allowed;
 						}
 						return true;
 					}
@@ -561,10 +602,12 @@ class Shield_Monitor_File_Monitor {
 				break;
 			}
 			if ( ! $file->isFile() || $file->isLink() || $file->getSize() > 1048576 ) {
+				if ( is_array( $skipped ) ) { $key = $file->isLink() ? 'symlink' : 'file_too_large_or_unreadable'; $skipped[$key] = ( $skipped[$key] ?? 0 ) + 1; }
 				continue;
 			}
 			$extension = strtolower( pathinfo( $file->getFilename(), PATHINFO_EXTENSION ) );
 			if ( ! in_array( $extension, $allowed_extensions, true ) ) {
+				if ( is_array( $skipped ) ) { $skipped['unsupported_extension'] = ( $skipped['unsupported_extension'] ?? 0 ) + 1; }
 				continue;
 			}
 			$path = wp_normalize_path( $file->getPathname() );
@@ -573,6 +616,7 @@ class Shield_Monitor_File_Monitor {
 			}
 			$relative = ltrim( substr( $path, strlen( $root ) ), '/' );
 			$files[ sanitize_text_field( trailingslashit( $prefix ) . $relative ) ] = $path;
+			if ( count( $files ) >= absint( $limit ) && is_array( $skipped ) ) { $skipped['file_limit'] = ( $skipped['file_limit'] ?? 0 ) + 1; }
 		}
 
 		return $files;
