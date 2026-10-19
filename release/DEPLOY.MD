@@ -5,7 +5,7 @@
 - **SVN URL:** `https://plugins.svn.wordpress.org/codewp-shield-monitor`
 - **Local working copy:** `release/wordpress-org-svn/`
 - **SVN Username:** WordPress.org username (vithanhlam)
-- **SVN Password:** dùng Application Password tạo tại https://profiles.wordpress.org/me/application-passwords/
+- **SVN Password:** dùng SVN-specific password tạo tại https://profiles.wordpress.org/me/profile/edit/group/3/?screen=svn-password
 
 ## Cấu trúc thư mục SVN
 
@@ -102,7 +102,7 @@ svn commit -m "Release 1.4.2 — wp2shell virtual patches (CVE-2026-63030, CVE-2
 
 SVN sẽ hỏi username và password:
 - **Username:** `vithanhlam`
-- **Password:** Application Password từ WordPress.org (KHÔNG phải mật khẩu đăng nhập)
+- **Password:** SVN-specific password từ WordPress.org (không phải mật khẩu đăng nhập hoặc Application Password)
 
 ### Bước 6: Xác nhận
 
@@ -128,12 +128,12 @@ svn add assets/banner-772x250.png  # nếu file mới
 svn commit -m "Update plugin banner"
 ```
 
-## Tạo Application Password
+## Tạo SVN-specific password
 
 1. Đăng nhập https://profiles.wordpress.org/
-2. Vào https://profiles.wordpress.org/me/application-passwords/
-3. Nhập tên (ví dụ: "SVN Deploy") → **Add New Application Password**
-4. Copy password (chỉ hiện một lần) → dùng cho `svn commit`
+2. Mở https://profiles.wordpress.org/me/profile/edit/group/3/?screen=svn-password
+3. Tạo hoặc đặt SVN-specific password và dùng với username `vithanhlam`.
+4. Không ghi mật khẩu vào repository, log hoặc đối số shell. Có thể dùng kho credential của SVN/keyring.
 
 ## Rollback (nếu cần)
 

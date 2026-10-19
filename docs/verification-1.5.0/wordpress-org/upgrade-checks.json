@@ -1,0 +1,46 @@
+{
+    "checks": 10,
+    "failures": 0,
+    "results": [
+        {
+            "name": "upgraded from real 1.4.4 to package 1.5.0",
+            "passed": true
+        },
+        {
+            "name": "preserved XML-RPC setting",
+            "passed": true
+        },
+        {
+            "name": "preserved custom login slug",
+            "passed": true
+        },
+        {
+            "name": "preserved paired API token data",
+            "passed": true
+        },
+        {
+            "name": "new UDRPC setting defaults off",
+            "passed": true
+        },
+        {
+            "name": "removed legacy license key",
+            "passed": true
+        },
+        {
+            "name": "removed legacy license state",
+            "passed": true
+        },
+        {
+            "name": "removed obsolete push schedule",
+            "passed": true
+        },
+        {
+            "name": "paid module physically absent from installed package",
+            "passed": true
+        },
+        {
+            "name": "guard default does not require WAF",
+            "passed": true
+        }
+    ]
+}

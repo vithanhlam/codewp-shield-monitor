@@ -6,7 +6,7 @@ Plugin hosting request approved for:
 - WordPress.org user: `vithanhlam`
 - SVN URL: `https://plugins.svn.wordpress.org/codewp-shield-monitor`
 - Public URL: `https://wordpress.org/plugins/codewp-shield-monitor`
-- Current release: `1.3.2`
+- Current release: `1.5.0`
 
 ## 1. Wait for SVN access
 

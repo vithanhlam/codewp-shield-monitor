@@ -2,6 +2,21 @@
 defined( 'ABSPATH' ) || exit;
 
 class Shield_Monitor_Activator {
+	/** Remove retired licensing credentials and the license-based metrics job once. */
+	public static function retire_premium() {
+		if ( get_option( 'shield_monitor_premium_retired' ) ) {
+			return;
+		}
+		wp_clear_scheduled_hook( 'shield_monitor_push_metrics' );
+		foreach ( array( 'shieldpress_license_key', 'shieldpress_license_status', 'shieldpress_license_net_failures', 'shield_monitor_last_push', 'shield_monitor_push_failures' ) as $option ) {
+			delete_option( $option );
+		}
+		foreach ( array( 'shieldpress_license_data', 'shield_monitor_license_message', 'shield_monitor_push_cache', 'shield_monitor_push_lock' ) as $transient ) {
+			delete_transient( $transient );
+		}
+		update_option( 'shield_monitor_premium_retired', 1 );
+	}
+
 	public static function activate() {
 		if ( version_compare( PHP_VERSION, '7.4', '<' ) ) {
 			deactivate_plugins( plugin_basename( SHIELD_MONITOR_FILE ) );
@@ -64,7 +79,7 @@ class Shield_Monitor_Activator {
 		wp_clear_scheduled_hook( Shield_Monitor_Malware_Scanner::CRON_HOOK, array( 'login' ) );
 		wp_clear_scheduled_hook( Shield_Monitor_Backup_Alert::CRON_HOOK );
 		wp_clear_scheduled_hook( Shield_Monitor_Vulnerability_Alert::CRON_HOOK );
-		wp_clear_scheduled_hook( Shield_Monitor_Push::CRON_HOOK );
+		wp_clear_scheduled_hook( 'shield_monitor_push_metrics' );
 	}
 
 	public static function uninstall() {
@@ -102,13 +117,9 @@ class Shield_Monitor_Activator {
 		delete_option( Shield_Monitor_Vulnerability_Alert::CACHE_OPTION );
 		delete_option( Shield_Monitor_Vulnerability_Alert::ALERT_SENT_OPTION );
 		wp_clear_scheduled_hook( Shield_Monitor_Vulnerability_Alert::CRON_HOOK );
-		delete_option( Shield_Monitor_License::OPTION_KEY );
-		delete_option( Shield_Monitor_License::STATUS_OPTION );
-		delete_option( Shield_Monitor_License::NETWORK_FAIL_OPTION );
-		delete_transient( Shield_Monitor_License::DATA_TRANSIENT );
-		delete_option( Shield_Monitor_Push::LAST_PUSH_OPT );
-		delete_option( Shield_Monitor_Push::PUSH_FAIL_OPT );
-		wp_clear_scheduled_hook( Shield_Monitor_Push::CRON_HOOK );
+		delete_option( 'shield_monitor_premium_retired' );
+		self::retire_premium();
+		delete_option( 'shield_monitor_premium_retired' );
 		delete_option( 'shield_monitor_media_pro_settings' );
 		delete_option( 'shield_monitor_media_pro_logs' );
 		delete_option( 'shield_monitor_media_scan_result' );

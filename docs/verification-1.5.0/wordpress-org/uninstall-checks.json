@@ -1,0 +1,18 @@
+{
+    "checks": 3,
+    "failures": 0,
+    "results": [
+        {
+            "name": "uninstall completed with isolated class loading",
+            "passed": true
+        },
+        {
+            "name": "settings removed",
+            "passed": true
+        },
+        {
+            "name": "legacy premium migration marker removed",
+            "passed": true
+        }
+    ]
+}

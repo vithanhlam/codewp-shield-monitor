@@ -1,0 +1,10 @@
+{
+  "version": "1.5.0",
+  "svn_revision": 3754879,
+  "tag": "https://plugins.svn.wordpress.org/codewp-shield-monitor/tags/1.5.0/",
+  "plugin": "https://wordpress.org/plugins/codewp-shield-monitor/",
+  "source_matches_tested_zip": true,
+  "api_version": "1.5.0",
+  "official_download_files": 37,
+  "official_download_matches_tested_files": true
+}

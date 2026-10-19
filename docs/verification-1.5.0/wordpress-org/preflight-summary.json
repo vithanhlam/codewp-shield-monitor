@@ -1,0 +1,53 @@
+{
+  "baseline_findings": 1294,
+  "current_findings": 218,
+  "baseline_errors": 1118,
+  "current_errors": 50,
+  "new_findings": [
+    {
+      "line": 136,
+      "column": 10,
+      "type": "WARNING",
+      "code": "PluginCheck.Security.DirectDB.UnescapedDBParameter",
+      "message": "Unescaped parameter $table used in $wpdb-&gt;query()\\n$table assigned unsafely at line 135.",
+      "docs": "",
+      "file": "includes/class-shield-monitor-activator.php"
+    },
+    {
+      "line": 138,
+      "column": 10,
+      "type": "WARNING",
+      "code": "PluginCheck.Security.DirectDB.UnescapedDBParameter",
+      "message": "Unescaped parameter $baseline_table used in $wpdb-&gt;query()\\n$baseline_table assigned unsafely at line 137.",
+      "docs": "",
+      "file": "includes/class-shield-monitor-activator.php"
+    },
+    {
+      "line": 140,
+      "column": 10,
+      "type": "WARNING",
+      "code": "PluginCheck.Security.DirectDB.UnescapedDBParameter",
+      "message": "Unescaped parameter $malware_cache_table used in $wpdb-&gt;query()\\n$malware_cache_table assigned unsafely at line 139.",
+      "docs": "",
+      "file": "includes/class-shield-monitor-activator.php"
+    },
+    {
+      "line": 0,
+      "column": 0,
+      "type": "WARNING",
+      "code": "trademarked_term",
+      "message": "The plugin slug includes a restricted term. Your plugin slug - \"codewp-shield-monitor\" - contains the restricted term \"wp\" which cannot be used at all in your plugin slug.",
+      "docs": "",
+      "file": "shield-monitor.php"
+    }
+  ],
+  "new_error_findings": [],
+  "new_findings_review": "Only existing SQL identifier warnings shifted by line numbers and the already-approved plugin slug; no newly introduced ERROR signatures. The current checker still reports 50 pre-existing ERROR findings; this is not a clean Plugin Check pass.",
+  "readme_validator": {
+    "errors": [],
+    "optional_notes": [
+      "No Upgrade Notice section",
+      "No donate link"
+    ]
+  }
+}

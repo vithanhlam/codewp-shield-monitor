@@ -134,7 +134,7 @@ class Shield_Monitor_Status {
 			'scan' => array( 'malware_scan_completed', 'malware_scan_suspicious', 'malware_report_cleared' ),
 			'app' => array( 'app_paired', 'app_revoked', 'token_rotated', 'token_scope_changed' ),
 			'database' => array( 'table_prefix_changed' ),
-			'system' => array( 'enumeration_blocked' ),
+			'system' => array( 'enumeration_blocked', 'udrpc_blocked' ),
 			'backup' => array( 'backup_overdue_alert', 'backup_detected' ),
 			'vulnerability' => array( 'vulnerability_detected', 'vulnerability_resolved' ),
 		);
@@ -1071,6 +1071,7 @@ class Shield_Monitor_Status {
 			'security_headers'    => (bool) $this->settings->get( 'security_headers' ),
 			'file_editor_disabled'=> (bool) $this->settings->get( 'disable_file_editor' ),
 			'software_installation_disabled'=> (bool) $this->settings->get( 'disable_software_installation' ),
+			'udrpc_blocked'       => (bool) $this->settings->get( 'block_udrpc' ),
 			'captcha_enabled'     => (bool) $this->settings->get( 'captcha_enabled' ),
 			'captcha_provider'    => sanitize_key( $this->settings->get( 'captcha_provider' ) ?: 'turnstile' ),
 			'captcha_forms'       => array_values( array_map( 'sanitize_key', (array) $this->settings->get( 'captcha_forms' ) ) ),

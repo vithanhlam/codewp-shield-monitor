@@ -11,6 +11,9 @@ class Shield_Monitor_Hardening {
 	}
 
 	public function register_hooks() {
+		// Run before Updraft's wp_loaded listener, independently of the pattern WAF.
+		add_action( 'plugins_loaded', array( $this, 'block_udrpc_request' ), -100 );
+
 		// Virtual patch: CVE-2026-60137 — sanitize author__not_in to prevent SQLi (always active).
 		add_action( 'parse_query', array( $this, 'sanitize_author_not_in' ) );
 
@@ -64,6 +67,31 @@ class Shield_Monitor_Hardening {
 			add_action( 'admin_init', array( $this, 'protect_uploads_directory' ) );
 			add_filter( 'wp_handle_upload_prefilter', array( $this, 'block_dangerous_uploads' ) );
 		}
+	}
+
+	/**
+	 * Optional containment for UpdraftCentral and other UDRPC consumers.
+	 * Blocks the entire transport, including valid signed requests. This is not
+	 * signature validation or a claim to fix a particular authentication bypass.
+	 */
+	public function block_udrpc_request() {
+		if ( ! $this->settings->get( 'block_udrpc' ) ) {
+			return;
+		}
+
+		// Check presence, not truthiness: empty and array values must not bypass.
+		// UDRPC uses PHP's parsed request parameters; JSON is not a supported RPC transport.
+		if ( ! array_key_exists( 'udrpc_message', $_POST ) && ! array_key_exists( 'udrpc_message', $_GET ) && ! array_key_exists( 'udrpc_message', $_REQUEST ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.NonceVerification.Recommended
+			return;
+		}
+
+		$this->logger->record( 'udrpc_blocked', array( 'rule_id' => 'udrpc_transport_disabled' ) );
+		nocache_headers();
+		wp_die(
+			esc_html__( 'Remote UDRPC requests are disabled by this site\'s security settings.', 'codewp-shield-monitor' ),
+			esc_html__( '403 Forbidden', 'codewp-shield-monitor' ),
+			array( 'response' => 403 )
+		);
 	}
 
 	// ── wp2shell Virtual Patches (always active) ────────────────────────

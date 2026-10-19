@@ -1,0 +1,34 @@
+{
+  "checks": 7,
+  "failures": 0,
+  "results": [
+    {
+      "name": "admin dashboard loads with authenticated lab cookie",
+      "passed": true
+    },
+    {
+      "name": "UDRPC switch rendered",
+      "passed": true
+    },
+    {
+      "name": "compatibility explanation rendered",
+      "passed": true
+    },
+    {
+      "name": "paid license menu absent",
+      "passed": true
+    },
+    {
+      "name": "premium menu absent",
+      "passed": true
+    },
+    {
+      "name": "no PHP fatal rendered",
+      "passed": true
+    },
+    {
+      "name": "anonymous vulnerability API denied",
+      "passed": true
+    }
+  ]
+}

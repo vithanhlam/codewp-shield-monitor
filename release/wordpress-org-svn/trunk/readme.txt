@@ -2,9 +2,9 @@
 Contributors: vithanhlam
 Tags: security, login, hardening, audit-log, privacy
 Requires at least: 6.4
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.4.4
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,6 +22,8 @@ Monitor your website health anywhere — visit [shieldpress.net](https://shieldp
 * Restricts public user enumeration.
 * Adds conservative browser security headers.
 * Optionally disables XML-RPC.
+* Optionally blocks UpdraftCentral / UDRPC requests before the listener runs; this also disables legitimate remote management and may affect migrations.
+* Enforces the plugin/theme installation lock for administrators and multisite super administrators.
 * Disables dashboard file editing.
 * Hides the default login/admin paths behind a custom login slug when enabled.
 * Shows failed-login IPs with manual block and unlock controls.
@@ -29,8 +31,11 @@ Monitor your website health anywhere — visit [shieldpress.net](https://shieldp
 * Blocks PHP execution inside the uploads directory and prevents uploading dangerous file types.
 * Supports comment and registration rate limiting per IP with optional math CAPTCHA challenges.
 
+All built-in features are available without a paid plugin plan or license activation.
+
 **Monitoring & Scanning**
 
+* Checks a reviewed, partial offline advisory list for critical WordPress core and plugin vulnerabilities, including patched-version guidance. This is detection, not an exploit-blocking guarantee.
 * Records a local security audit log with configurable retention (30 days default).
 * Monitors important WordPress files once daily during off-peak hours using SHA-256 hashes.
 * Runs lightweight suspicious-code and database scans with severity-based findings.
@@ -113,6 +118,13 @@ Yes. XML-RPC blocking is disabled by default because Jetpack and remote publishi
 1. CodeWP Shield Monitor security dashboard with protection score, file integrity, malware scan, and audit log panels.
 
 == Changelog ==
+
+= 1.5.0 =
+* Added an optional early UpdraftCentral / UDRPC request block, independent of the WAF. Disabled by default to preserve remote management and migration compatibility.
+* Fixed the plugin/theme installation lock for multisite super administrators.
+* Added reviewed offline WordPress core and plugin CVE advisories with version-aware alerts.
+* Removed paid plans, license activation and verification, premium addon loading, and license-authenticated metrics pushes. App pairing and scoped APIs remain available.
+* Validated signed RPC upload/activation and containment in an isolated WordPress 7.1.3 + UpdraftPlus Free 1.26.11 lab. The reported Premium no-key bypass has not been reproduced.
 
 = 1.4.4 =
 * Expanded integrity monitoring to parent/child themes, active/inactive plugins, MU-plugins, drop-ins, uploads and configuration/verification files, with coverage and skipped-file reporting.
