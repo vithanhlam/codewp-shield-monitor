@@ -5,6 +5,7 @@
 /.codex
 /node_modules
 /docs
+/tests
 /README.MD
 /WORDPRESS.MD
 /wordpress-org-assets

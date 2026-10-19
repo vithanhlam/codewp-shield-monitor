@@ -1,0 +1,78 @@
+{
+    "checks": 18,
+    "failures": 0,
+    "results": [
+        {
+            "name": "actual multisite bootstrap",
+            "passed": true
+        },
+        {
+            "name": "actual network super admin",
+            "passed": true
+        },
+        {
+            "name": "old user_has_cap-only lock bypassed by super admin",
+            "passed": true
+        },
+        {
+            "name": "map_meta_cap fix denies super admin",
+            "passed": true
+        },
+        {
+            "name": "install_plugins lock=0",
+            "passed": true
+        },
+        {
+            "name": "upload_plugins lock=0",
+            "passed": true
+        },
+        {
+            "name": "delete_plugins lock=0",
+            "passed": true
+        },
+        {
+            "name": "install_themes lock=0",
+            "passed": true
+        },
+        {
+            "name": "upload_themes lock=0",
+            "passed": true
+        },
+        {
+            "name": "delete_themes lock=0",
+            "passed": true
+        },
+        {
+            "name": "read lock=0",
+            "passed": true
+        },
+        {
+            "name": "install_plugins lock=1",
+            "passed": true
+        },
+        {
+            "name": "upload_plugins lock=1",
+            "passed": true
+        },
+        {
+            "name": "delete_plugins lock=1",
+            "passed": true
+        },
+        {
+            "name": "install_themes lock=1",
+            "passed": true
+        },
+        {
+            "name": "upload_themes lock=1",
+            "passed": true
+        },
+        {
+            "name": "delete_themes lock=1",
+            "passed": true
+        },
+        {
+            "name": "read lock=1",
+            "passed": true
+        }
+    ]
+}

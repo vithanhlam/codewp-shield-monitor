@@ -3,7 +3,7 @@
  * Plugin Name:       CodeWP Shield Monitor
  * Plugin URI:        https://shieldpress.net
  * Description:       Lightweight, privacy-first security hardening and login protection for WordPress.
- * Version:           1.4.4
+ * Version:           1.5.0
  * Requires at least: 6.4
  * Requires PHP:      7.4
  * Author:            vithanhlam
@@ -15,7 +15,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'SHIELD_MONITOR_VERSION', '1.4.4' );
+define( 'SHIELD_MONITOR_VERSION', '1.5.0' );
 define( 'CODEWP_SHIELD_MONITOR_NAME', 'Shield Monitor' );
 define( 'CODEWP_SHIELD_MONITOR_SLUG', 'codewp-shield-monitor' );
 define( 'CODEWP_SHIELD_MONITOR_API_NAMESPACE', 'codewp-shield-monitor/v1' );
@@ -41,13 +41,9 @@ require_once SHIELD_MONITOR_PATH . 'includes/class-shield-monitor-waf.php';
 require_once SHIELD_MONITOR_PATH . 'includes/class-shield-monitor-db-cleanup.php';
 require_once SHIELD_MONITOR_PATH . 'includes/class-shield-monitor-media-optimization.php';
 require_once SHIELD_MONITOR_PATH . 'includes/class-shield-monitor-backup-alert.php';
+require_once SHIELD_MONITOR_PATH . 'includes/class-shield-monitor-known-vulnerabilities.php';
 require_once SHIELD_MONITOR_PATH . 'includes/class-shield-monitor-vulnerability-alert.php';
-require_once SHIELD_MONITOR_PATH . 'includes/class-shield-monitor-license.php';
-require_once SHIELD_MONITOR_PATH . 'includes/class-shield-monitor-addons.php';
-require_once SHIELD_MONITOR_PATH . 'includes/class-shield-monitor-license-page.php';
-require_once SHIELD_MONITOR_PATH . 'includes/class-shield-monitor-addon-pages.php';
 require_once SHIELD_MONITOR_PATH . 'includes/class-shield-monitor-api.php';
-require_once SHIELD_MONITOR_PATH . 'includes/class-shield-monitor-push.php';
 require_once SHIELD_MONITOR_PATH . 'includes/class-shield-monitor-security-dashboard.php';
 require_once SHIELD_MONITOR_PATH . 'includes/class-shield-monitor-admin.php';
 require_once SHIELD_MONITOR_PATH . 'includes/class-shield-monitor.php';

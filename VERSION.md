@@ -1,20 +1,19 @@
 # CodeWP Shield Monitor Version Information
 
-Version: 1.4.4
-Release date: 2026-09-24
+Version: 1.5.0
+Release date: 2026-10-19
 Requires at least: WordPress 6.4
-Tested up to: WordPress 7.0
+Tested up to: WordPress 7.1
 Requires PHP: 7.4
 License: GPLv2 or later
 
 ## Highlights
 
-- Expanded integrity monitoring scope and coverage reporting.
-- Added conditional redirect indicators and explicit partial-scan reporting.
-- Scheduled automatic integrity checks for off-peak hours and deferred login-triggered malware scans.
-
-- Fixed fatal error during plugin uninstall when dependent classes were not loaded.
-- Softened UI placeholder text that could trigger hosting malware scanner false positives.
+- Optional early UDRPC transport blocking, independent of WAF and admin identity.
+- Installation lock also covers multisite super-admin capability checks.
+- Reviewed offline core/plugin CVE alerts with exact version boundaries.
+- Removed paid plans, licensing, premium addons and license-based metrics push.
+- Preserved built-in features, App pairing and token-scoped APIs.
 
 ## Release Checklist
 

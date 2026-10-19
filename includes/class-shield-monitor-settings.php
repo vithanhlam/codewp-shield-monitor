@@ -58,6 +58,7 @@ class Shield_Monitor_Settings {
 			'notify_woocommerce'       => 0,
 			'notify_post_types'        => array(),
 			'waf_enabled'                    => 0,
+			'block_udrpc'                    => 0,
 			'honeypot_enabled'               => 0,
 			'block_php_uploads'              => 0,
 			'comment_captcha_enabled'        => 0,
@@ -110,7 +111,7 @@ class Shield_Monitor_Settings {
 		$input = is_array( $input ) ? $input : array();
 		$current = $this->all();
 		$clean = array();
-		foreach ( array( 'login_protection', 'hide_login', 'block_enumeration', 'disable_xmlrpc', 'restrict_rest_api', 'rest_api_block_user_creation', 'rest_api_block_media_upload', 'rest_api_block_post_creation', 'rest_api_block_plugin_management', 'rest_api_block_settings_access', 'rest_api_block_export', 'rest_api_block_app_passwords', 'limit_heartbeat', 'security_headers', 'hide_version', 'disable_file_editor', 'disable_software_installation', 'captcha_enabled', 'admin_pin_enabled', 'audit_log', 'file_monitoring', 'malware_scanning', 'email_alerts', 'alert_admin_login', 'alert_admin_user_changes', 'alert_file_changes', 'alert_lockouts', 'alert_malware_findings', 'alert_backup_overdue', 'alert_vulnerability', 'core_checksum_verification', 'notify_contact_form_7', 'notify_woocommerce', 'waf_enabled', 'honeypot_enabled', 'block_php_uploads', 'comment_captcha_enabled', 'comment_rate_limit_enabled', 'comment_math_captcha_enabled', 'registration_rate_limit_enabled', 'disable_image_sizes', 'webp_convert_enabled', 'webp_keep_original', 'upload_limit_enabled', 'image_resize_enabled' ) as $key ) {
+		foreach ( array( 'login_protection', 'hide_login', 'block_enumeration', 'disable_xmlrpc', 'restrict_rest_api', 'rest_api_block_user_creation', 'rest_api_block_media_upload', 'rest_api_block_post_creation', 'rest_api_block_plugin_management', 'rest_api_block_settings_access', 'rest_api_block_export', 'rest_api_block_app_passwords', 'limit_heartbeat', 'security_headers', 'hide_version', 'disable_file_editor', 'disable_software_installation', 'captcha_enabled', 'admin_pin_enabled', 'audit_log', 'file_monitoring', 'malware_scanning', 'email_alerts', 'alert_admin_login', 'alert_admin_user_changes', 'alert_file_changes', 'alert_lockouts', 'alert_malware_findings', 'alert_backup_overdue', 'alert_vulnerability', 'core_checksum_verification', 'notify_contact_form_7', 'notify_woocommerce', 'waf_enabled', 'block_udrpc', 'honeypot_enabled', 'block_php_uploads', 'comment_captcha_enabled', 'comment_rate_limit_enabled', 'comment_math_captcha_enabled', 'registration_rate_limit_enabled', 'disable_image_sizes', 'webp_convert_enabled', 'webp_keep_original', 'upload_limit_enabled', 'image_resize_enabled' ) as $key ) {
 			$clean[ $key ] = array_key_exists( $key, $input ) ? ( empty( $input[ $key ] ) ? 0 : 1 ) : absint( $current[ $key ] ?? 0 );
 		}
 		$quick_login_submitted = ! empty( $input['quick_login_submitted'] );

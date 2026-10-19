@@ -4,6 +4,24 @@ All notable changes to CodeWP Shield Monitor (ShieldPress) are documented in thi
 
 ---
 
+## 1.5.0 — 2026-10-19
+
+### Security
+
+- Added an optional UpdraftCentral / UDRPC transport block, enforced before the RPC listener and independently of the WAF or administrator identity. Disabled by default because it also disables legitimate remote management and may affect migrations.
+- Enforced the existing plugin/theme installation lock through `map_meta_cap`, covering WordPress's multisite super-admin capability shortcut.
+- Verified signed RPC upload/activation and containment in an isolated WordPress 7.1.3 + UpdraftPlus Free 1.26.11 lab. This does not establish or reproduce the reported Premium no-key authentication bypass.
+
+### Vulnerability alerts
+
+- Added a reviewed offline advisory list for WordPress core CVE-2026-87902, CVE-2026-63030 and CVE-2026-60137, and critical UpdraftPlus, Burst Statistics, TranslatePress, Breeze and Kali Forms vulnerabilities. Version matches warn about potentially affected software; they do not confirm exploitation or promise a virtual patch.
+- Restricted detailed vulnerability results to administrators or paired API tokens with `status:read` scope, and stopped granting default scopes to tokens that already have explicit scope metadata.
+
+### Retired paid plans
+
+- Removed license activation/verification and REST routes, paid plan screens, premium addon discovery/loading and the license-authenticated metrics push job.
+- Removed stored legacy license credentials and obsolete push schedules during upgrade. Built-in features, App pairing and scoped API tokens remain available.
+
 ## 1.4.4 — 2026-09-24
 
 ### Security Monitoring

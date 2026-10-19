@@ -195,7 +195,9 @@ class Shield_Monitor_API {
 				if ( $expires && $expires <= time() ) {
 					return new WP_Error( 'shield_monitor_token_expired', __( 'This CodeWP Shield Monitor API token has expired.', 'codewp-shield-monitor' ), array( 'status' => 401 ) );
 				}
-				$scopes = $this->normalize_scopes( ! empty( $saved['scopes'] ) && is_array( $saved['scopes'] ) ? $saved['scopes'] : array() );
+				// Defaults apply only to legacy tokens without scope metadata. Never
+				// silently grant default scopes that an explicitly scoped token lacks.
+				$scopes = isset( $saved['scopes'] ) && is_array( $saved['scopes'] ) ? $saved['scopes'] : $this->default_scopes();
 				if ( ! in_array( $required_scope, $scopes, true ) ) {
 					if ( 'quick-login:create' === $required_scope ) {
 						$this->logger->record( 'quick_login_failed', array( 'reason' => 'scope_forbidden', 'token_id' => $id ) );

@@ -1,0 +1,15 @@
+{
+  "version": "1.5.0",
+  "archive": "codewp-shield-monitor-1.5.0.zip",
+  "files": 37,
+  "bytes": 168183,
+  "sha256": "8782b6efc9b6fe4585359b355d03a07e1d8bc591eb7f5b8410d23dbc8d84609a",
+  "php_syntax_files": 32,
+  "advisory_boundaries": 44,
+  "http_after": 15,
+  "release_checks": 31,
+  "multisite_checks": 18,
+  "uninstall_checks": 3,
+  "javascript_build": "passed (npm ci; npm run build)",
+  "history_scan": "104 historical blobs checked for common credential patterns; no matches"
+}

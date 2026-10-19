@@ -12,8 +12,6 @@ $shield_monitor_uninstall_deps = array(
 	'class-shield-monitor-malware-scanner.php',
 	'class-shield-monitor-backup-alert.php',
 	'class-shield-monitor-vulnerability-alert.php',
-	'class-shield-monitor-license.php',
-	'class-shield-monitor-push.php',
 	'class-shield-monitor-activator.php',
 );
 

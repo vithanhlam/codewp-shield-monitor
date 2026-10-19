@@ -1,0 +1,98 @@
+{
+  "phase": "after",
+  "wordpress": "7.1.3",
+  "updraftplus": "Free 1.26.11",
+  "database": "SQLite",
+  "failures": 0,
+  "results": [
+    {
+      "name": "signed upload and activation baseline",
+      "passed": true,
+      "http": 200,
+      "rpc": "rpcok",
+      "installed": true,
+      "activated": true
+    },
+    {
+      "name": "WAF alone allows signed RPC installation",
+      "passed": true,
+      "http": 200,
+      "installed": true,
+      "activated": true
+    },
+    {
+      "name": "software lock blocks signed RPC upload",
+      "passed": true,
+      "http": 200,
+      "rpc_error": "plugin_insufficient_permission",
+      "installed": false
+    },
+    {
+      "name": "Updraft rejects invalid signature with existing key",
+      "passed": true,
+      "http": 200,
+      "response_bytes": 0,
+      "installed": false
+    },
+    {
+      "name": "Free 1.26.11 no-key negative control",
+      "passed": true,
+      "http": 200,
+      "installed": false,
+      "attribution": "Updraft has no central listener; not ShieldPress blocking"
+    },
+    {
+      "name": "UDRPC guard blocks valid signature before installation with WAF off",
+      "passed": true,
+      "http": 403,
+      "installed": false
+    },
+    {
+      "name": "guard: admin cookie",
+      "passed": true,
+      "http": 403
+    },
+    {
+      "name": "guard: admin AJAX",
+      "passed": true,
+      "http": 403
+    },
+    {
+      "name": "guard: array value",
+      "passed": true,
+      "http": 403
+    },
+    {
+      "name": "guard: empty value",
+      "passed": true,
+      "http": 403
+    },
+    {
+      "name": "guard: GET parameter",
+      "passed": true,
+      "http": 403
+    },
+    {
+      "name": "guard blocks with no configured key",
+      "passed": true,
+      "http": 403
+    },
+    {
+      "name": "ordinary frontend form unaffected",
+      "passed": true,
+      "http": 200
+    },
+    {
+      "name": "raw JSON is not parsed by Updraft POST listener",
+      "passed": true,
+      "http": 200,
+      "note": "Not claimed as inspected or blocked; PHP does not populate POST for JSON"
+    },
+    {
+      "name": "guard opt-out restores valid RPC upload",
+      "passed": true,
+      "http": 200,
+      "installed": true
+    }
+  ]
+}

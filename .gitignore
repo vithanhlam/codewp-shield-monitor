@@ -22,3 +22,6 @@ addons/media-pro.zip
 # Agent / tooling
 .agents/
 .codex/
+.aws/
+.env
+.env.*

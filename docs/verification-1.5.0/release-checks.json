@@ -1,0 +1,130 @@
+{
+    "checks": 31,
+    "failures": 0,
+    "results": [
+        {
+            "name": "release version 1.5.0",
+            "passed": true
+        },
+        {
+            "name": "retired class not loaded: Shield_Monitor_License",
+            "passed": true
+        },
+        {
+            "name": "retired class not loaded: Shield_Monitor_License_Page",
+            "passed": true
+        },
+        {
+            "name": "retired class not loaded: Shield_Monitor_Addons",
+            "passed": true
+        },
+        {
+            "name": "retired class not loaded: Shield_Monitor_Addon_Pages",
+            "passed": true
+        },
+        {
+            "name": "retired class not loaded: Shield_Monitor_Push",
+            "passed": true
+        },
+        {
+            "name": "legacy key removed",
+            "passed": true
+        },
+        {
+            "name": "legacy failure state removed",
+            "passed": true
+        },
+        {
+            "name": "license cache removed",
+            "passed": true
+        },
+        {
+            "name": "obsolete metrics job removed",
+            "passed": true
+        },
+        {
+            "name": "daily license verification unhooked",
+            "passed": true
+        },
+        {
+            "name": "offline advisory found through real installed-plugin scan",
+            "passed": true
+        },
+        {
+            "name": "current core is not incorrectly flagged",
+            "passed": true
+        },
+        {
+            "name": "no paid endpoint: \/codewp-shield-monitor\/v1\/backup-status",
+            "passed": true
+        },
+        {
+            "name": "no paid endpoint: \/codewp-shield-monitor\/v1\/vulnerabilities",
+            "passed": true
+        },
+        {
+            "name": "no paid endpoint: \/codewp-shield-monitor\/v1\/pair",
+            "passed": true
+        },
+        {
+            "name": "no paid endpoint: \/codewp-shield-monitor\/v1\/status",
+            "passed": true
+        },
+        {
+            "name": "no paid endpoint: \/codewp-shield-monitor\/v1\/public-score",
+            "passed": true
+        },
+        {
+            "name": "no paid endpoint: \/codewp-shield-monitor\/v1\/public\/scan",
+            "passed": true
+        },
+        {
+            "name": "no paid endpoint: \/codewp-shield-monitor\/v1\/events",
+            "passed": true
+        },
+        {
+            "name": "no paid endpoint: \/codewp-shield-monitor\/v1\/token\/rotate",
+            "passed": true
+        },
+        {
+            "name": "no paid endpoint: \/codewp-shield-monitor\/v1\/quick-login",
+            "passed": true
+        },
+        {
+            "name": "App route remains: pair",
+            "passed": true
+        },
+        {
+            "name": "App route remains: status",
+            "passed": true
+        },
+        {
+            "name": "App route remains: events",
+            "passed": true
+        },
+        {
+            "name": "App route remains: token\/rotate",
+            "passed": true
+        },
+        {
+            "name": "App route remains: quick-login",
+            "passed": true
+        },
+        {
+            "name": "anonymous CVE details denied",
+            "passed": true
+        },
+        {
+            "name": "administrator can read CVE details",
+            "passed": true
+        },
+        {
+            "name": "paired status:read token can read CVE details",
+            "passed": true
+        },
+        {
+            "name": "token lacking status:read denied",
+            "passed": true
+        }
+    ]
+}

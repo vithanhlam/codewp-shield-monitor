@@ -12,6 +12,7 @@ class Shield_Monitor_Advanced_Hardening {
 	}
 
 	public function register_hooks() {
+		add_filter( 'map_meta_cap', array( $this, 'restrict_software_meta_caps' ), 10, 4 );
 		add_filter( 'user_has_cap', array( $this, 'restrict_software_caps' ), 10, 4 );
 		add_action( 'login_enqueue_scripts', array( $this, 'login_assets' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'frontend_assets' ) );
@@ -37,6 +38,17 @@ class Shield_Monitor_Advanced_Hardening {
 		add_action( 'register_form', array( $this, 'registration_rate_limit_fields' ) );
 		add_action( 'woocommerce_register_form', array( $this, 'registration_rate_limit_fields' ) );
 		add_action( 'woocommerce_register_post', array( $this, 'verify_woocommerce_registration_rate_limit' ), 9, 3 );
+	}
+
+	/**
+	 * Enforce the installation lock for multisite super admins too. WordPress
+	 * short-circuits user_has_cap for them unless map_meta_cap denies the request.
+	 */
+	public function restrict_software_meta_caps( $caps, $cap, $user_id, $args ) {
+		if ( $this->settings->get( 'disable_software_installation' ) && in_array( $cap, array( 'install_plugins', 'upload_plugins', 'delete_plugins', 'install_themes', 'upload_themes', 'delete_themes' ), true ) ) {
+			return array( 'do_not_allow' );
+		}
+		return $caps;
 	}
 
 	public function restrict_software_caps( $allcaps, $caps, $args, $user ) {
